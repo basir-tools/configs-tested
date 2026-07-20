@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b0d12">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Configs</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg0: #07090d;
+    --bg1: #0b0d12;
+    --bg2: #101521;
+    --card: rgba(255,255,255,0.05);
+    --card-2: rgba(255,255,255,0.08);
+    --line: rgba(255,255,255,0.08);
+    --line-2: rgba(255,255,255,0.12);
+    --text: #edf2f7;
+    --muted: #b6c0cd;
+    --soft: #dce3ec;
+    --accent: #ffffff;
+    --ok: #39d98a;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    min-height: 100%;
+    background: var(--bg1);
+  }
+
+  body {
+    min-height: 100svh;
+    background:
+      radial-gradient(circle at 20% 18%, rgba(78, 99, 165, 0.20), transparent 30%),
+      radial-gradient(circle at 82% 10%, rgba(58, 149, 255, 0.12), transparent 22%),
+      radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.12), transparent 40%),
+      linear-gradient(180deg, var(--bg2) 0%, var(--bg1) 45%, #07090d 100%);
+    background-color: var(--bg1);
+    display: grid;
+    place-items: center;
+    padding: 12px;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.06), transparent 32%),
+      radial-gradient(circle at 100% 100%, rgba(255,255,255,0.03), transparent 28%);
+  }
+
+  .container {
+    width: min(760px, calc(100vw - 24px));
+    max-height: calc(100svh - 24px);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px 16px 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.035));
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 26px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+      0 24px 80px rgba(0,0,0,0.58),
+      inset 0 1px 0 rgba(255,255,255,0.06);
+    overflow: auto;
+    scrollbar-width: none;
+    overscroll-behavior: contain;
+  }
+
+  .container::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2px;
+  }
+
+  .copy-all {
+    width: 100%;
+    max-width: 260px;
+    min-height: 46px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(235,239,245,0.92));
+    color: #0b0d12;
+    border: 1px solid rgba(255,255,255,0.8);
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.25);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .copy-all:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.3);
+  }
+
+  .copy-all:active {
+    transform: scale(0.98);
+  }
+
+  .part {
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: rgba(0,0,0,0.22);
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .part[open] {
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  summary {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 10px;
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 14px;
+    user-select: none;
+    background: rgba(255,255,255,0.025);
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .part[open] > summary {
+    background: rgba(255,255,255,0.045);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  summary span {
+    grid-column: 2;
+    justify-self: center;
+    text-align: center;
+    min-width: 0;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: var(--soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .copy-part {
+    grid-column: 3;
+    justify-self: end;
+    background: rgba(255,255,255,0.12);
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .copy-part:hover {
+    background: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.14);
+    transform: translateY(-1px);
+  }
+
+  .copy-part:active {
+    transform: scale(0.96);
+  }
+
+  textarea {
+    display: block;
+    width: 100%;
+    border: none;
+    outline: none;
+    resize: none;
+    background: rgba(0,0,0,0.26);
+    color: #dbe2eb;
+    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, monospace;
+    font-size: 12.8px;
+    line-height: 1.55;
+    padding: 14px 14px 15px;
+    min-height: 74px;
+    max-height: 240px;
+    overflow: auto;
+    white-space: pre;
+    tab-size: 2;
+    caret-color: transparent;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.16) transparent;
+  }
+
+  textarea::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  textarea::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.16);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  textarea::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  textarea:focus {
+    background: rgba(0,0,0,0.34);
+  }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    transform: translateX(-50%) translateY(14px);
+    background: rgba(17, 24, 18, 0.92);
+    color: #ecfff4;
+    border: 1px solid rgba(57, 217, 138, 0.28);
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    opacity: 0;
+    transition: all 0.24s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+    pointer-events: none;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.32);
+    letter-spacing: 0.2px;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 640px) {
+    body {
+      padding: 8px;
+    }
+
+    .container {
+      width: min(100%, calc(100vw - 16px));
+      max-height: calc(100svh - 16px);
+      padding: 14px 12px 12px;
+      border-radius: 22px;
+      gap: 10px;
+    }
+
+    .copy-all {
+      max-width: none;
+      min-height: 44px;
+      font-size: 14px;
+      padding: 11px 16px;
+    }
+
+    summary {
+      padding: 10px 12px;
+      gap: 8px;
+    }
+
+    summary span {
+      font-size: 13px;
+    }
+
+    .copy-part {
+      padding: 6px 12px;
+      font-size: 11px;
+    }
+
+    textarea {
+      font-size: 12px;
+      min-height: 62px;
+      max-height: 180px;
+      padding: 12px 12px 13px;
+      line-height: 1.5;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <button id="copyAllBtn" class="copy-all">Copy All 43 Configs</button>
+  </div>
+  
+        <details class="part">
+            <summary>
+                <span>Part 1</span>
+                <button class="copy-part" data-target="part-1">Copy</button>
+            </summary>
+            <textarea id="part-1" readonly wrap="off">vless://bf973a3b-b285-4369-8c01-1f1e50024a38@65.109.219.124:10485?security=&amp;amp;encryption=none&amp;amp;headerType=none&amp;amp;type=tcp#%F0%9F%87%AB%F0%9F%87%AE116595%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FLonUp_M
+vless://e4514801-0d5a-42ba-869f-39bd605aef9e@13.36.111.173:22223?encryption=none&amp;amp;security=none&amp;amp;type=tcp#[🇫🇷
+vless://e4514801-0d5a-42ba-869f-39bd605aef9e@13.36.111.173:22222?encryption=none&amp;amp;security=none&amp;amp;type=tcp#[🇫🇷
+vless://e4514801-0d5a-42ba-869f-39bd605aef9e@52.57.228.114:22222?encryption=none&amp;amp;security=none&amp;amp;type=tcp&amp;amp;headerType=none#[🇩🇪
+vless://e4514801-0d5a-42ba-869f-39bd605aef9e@52.57.228.114:22224?encryption=none&amp;amp;security=none&amp;amp;type=tcp&amp;amp;headerType=none#%F0%9F%A7%B8%40V2rayATM
+vless://6ff24708-1b2a-47dc-bc2b-d498ea00e3e1@43.245.198.157:21719?encryption=none&amp;amp;security=none&amp;amp;type=tcp&amp;amp;headerType=none#[🇸🇬
+vless://e4514801-0d5a-42ba-869f-39bd605aef9e@52.57.228.114:22223?encryption=none&amp;amp;security=none&amp;amp;type=tcp#[🇩🇪
+vless://e4514801-0d5a-42ba-869f-39bd605aef9e@15.237.47.97:22222?encryption=none&amp;amp;security=none&amp;amp;type=tcp#%F0%9F%87%AB%F0%9F%87%B7116699%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FSOSkeyNET
+vless://e4514801-0d5a-42ba-869f-39bd605aef9e@15.237.47.97:22223?encryption=none&amp;amp;security=none&amp;amp;type=tcp#%F0%9F%87%AB%F0%9F%87%B7116700%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FSOSkeyNET
+vless://e4514801-0d5a-42ba-869f-39bd605aef9e@15.237.47.97:22224?encryption=none&amp;amp;security=none&amp;amp;type=tcp#%F0%9F%87%AB%F0%9F%87%B7116701%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FSOSkeyNET
+vmess://eyJhZGQiOiAiMzEuNTYuMTc5LjE5NCIsICJhaWQiOiAiMCIsICJhbHBuIjogIiIsICJmcCI6ICIiLCAiaG9zdCI6ICIiLCAiaWQiOiAiMWYyMzM5N2QtZmRiMy00NzczLWZjMTEtODU3Mjg0NTQ2ZjJmIiwgImluc2VjdXJlIjogIjAiLCAibmV0IjogInRjcCIsICJwYXRoIjogIiIsICJwY3MiOiAiIiwgInBvcnQiOiAiMjIyNDciLCAicHMiOiAi8J+HsfCfh7sxMTY2MDkgfCDimqHvuI9UZWxlZ3JhbSA9IHQubWUvTG9uVXBfTSIsICJzY3kiOiAiYXV0byIsICJzbmkiOiAiIiwgInRscyI6ICIiLCAidHlwZSI6ICJub25lIiwgInYiOiAiMiIsICJ2Y24iOiAiIn0=
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpvWklvQTY5UTh5aGNRVjhrYTNQYTNB@82.38.31.35:8080#%F0%9F%93%A1%20%D8%B4%D8%A7%D9%87
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo3ZTczMWVjMy1mOGUxLTQzZjYtOTJjZi0zOTc4ZDE0NzA1YzQ@61.231.34.200:50099#%F0%9F%A4%B9%E2%80%8D%E2%99%82%EF%B8%8F%20%D8%B4%D8%A7%D9%87
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTprMWRCT21PQjRvcWk3VW1wMzdhMWJR@82.38.31.190:8080#%F0%9F%8E%AD%20%D8%B4%D8%A7%D9%87
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTprMWRCT21PQjRvcWk3VW1wMzdhMWJR@82.38.31.189:8080#%E2%98%84%EF%B8%8F%20%D8%B4%D8%A7%D9%87
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTprMWRCT21PQjRvcWk3VW1wMzdhMWJR@82.38.31.176:8080#%F0%9F%8E%9F%EF%B8%8F%20%D8%B4%D8%A7%D9%87
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpvWklvQTY5UTh5aGNRVjhrYTNQYTNB@82.38.31.26:8080#%F0%9F%8E%89%20%D8%B4%D8%A7%D9%87
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTprMWRCT21PQjRvcWk3VW1wMzdhMWJR@82.38.31.198:8080#@Dariche_Azadi
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpvWklvQTY5UTh5aGNRVjhrYTNQYTNB@82.38.31.17:8080#%F0%9F%8F%86%20%D8%B4%D8%A7%D9%87
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpvWklvQTY5UTh5aGNRVjhrYTNQYTNB@82.38.31.18:8080#%F0%9F%A4%B9%20%D8%B4%D8%A7%D9%87</textarea>
+        </details>
+        <details class="part">
+            <summary>
+                <span>Part 2</span>
+                <button class="copy-part" data-target="part-2">Copy</button>
+            </summary>
+            <textarea id="part-2" readonly wrap="off">ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTprMWRCT21PQjRvcWk3VW1wMzdhMWJR@82.38.31.195:8080#@Dariche_Azadi
+ss://YWVzLTI1Ni1nY206NjUxMjAzMDk2MTQ3M2YyMQ@185.198.235.208:20129#%F0%9F%87%AE%F0%9F%87%B9116582%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FLonUp_M
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpvWklvQTY5UTh5aGNRVjhrYTNQYTNB@82.38.31.35:443#%F0%9F%87%B3%F0%9F%87%B1116569%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FLonUp_M
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTprMWRCT21PQjRvcWk3VW1wMzdhMWJR@82.38.31.192:8080#@Dariche_Azadi
+ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpvWklvQTY5UTh5aGNRVjhrYTNQYTNB@82.38.31.11:8080#[🏁
+ss://YWVzLTI1Ni1nY206NzNqNFJDUE5BMQ@31.56.179.194:44919#%40Nitro_Skybot
+trojan://CF68213490@18.184.4.15:443?fp=chrome&amp;amp;sni=harmless-lab.rooster465.autos#%F0%9F%87%A9%F0%9F%87%AA116431%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FLonUp_M
+trojan://NQ26071394@89.39.70.143:443?fp=chrome&amp;amp;sni=thorough-falcon.rooster465.autos#%F0%9F%87%B3%F0%9F%87%B1116443%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FLonUp_M
+trojan://humanity@162.159.38.119:443?path=%2Fassignment&amp;amp;security=tls&amp;amp;insecure=0&amp;amp;host=www.gossipglove.com&amp;amp;type=ws&amp;amp;allowInsecure=0&amp;amp;sni=www.gossipglove.com#%E2%98%91%E2%9E%9C%DA%86%D9%86%D9%84%D9%85%D9%88%D9%86%3A%20Express_freevpn%40
+trojan://521314@wangcai.yunzhongzhuan.com:443?host=tjplay.lxdxo.kdns.fr&amp;amp;path=Telegram%F0%9F%87%A8%F0%9F%87%B3&amp;amp;sni=tjplay.lxdxo.kdns.fr&amp;amp;type=ws#%F0%9F%87%A8%F0%9F%87%A6116457%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FLonUp_M
+trojan://MiTiVPN@162.159.38.200:443?path=%2F---%40MiTiVPN%2F---%40MiTiVPN%2F---%40MiTiVPN%2F---%40MiTiVPN%2F---%40MiTiVPN%3DfLL&amp;amp;security=tls&amp;amp;alpn=http%2F1.1&amp;amp;insecure=1&amp;amp;host=f--ls-Fl.App-Cloud.ir&amp;amp;fp=chrome&amp;amp;type=ws&amp;amp;allowInsecure=1&amp;amp;sni=fl-o--7-flla.App-Cloud.ir#%F0%9F%87%BA%F0%9F%87%B8116466%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FLonUp_M
+trojan://MITIVPN@162.159.8.101:443?path=%2F---%40MiTiVPN%2F---%40MiTiVPN%2F---%40MiTiVPN%2F---%40MiTiVPN%2F---%40MiTiVPN%3DUSSA&amp;amp;security=tls&amp;amp;alpn=http%2F1.1&amp;amp;insecure=1&amp;amp;host=my-usa-ol.App-Cloud.ir&amp;amp;fp=chrome&amp;amp;type=ws&amp;amp;allowInsecure=1&amp;amp;sni=UsAa-bUs.App-Cloud.ir#%F0%9F%87%A8%F0%9F%87%A6116468%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FLonUp_M
+trojan://MiTiVPN@104.21.55.230:443?path=%2F---%40MiTiVPN%2F---%40MiTiVPN%2F---%40MiTiVPN%2F---%40MiTiVPN%2F---%40MiTiVPN%3DSS-w&amp;amp;security=tls&amp;amp;alpn=http%2F1.1&amp;amp;insecure=1&amp;amp;host=bw--ivs-b--vvs.App-Cloud.ir&amp;amp;fp=chrome&amp;amp;type=ws&amp;amp;allowInsecure=1&amp;amp;sni=wbjj-bbcs-.App-Cloud.ir#%F0%9F%87%A8%F0%9F%87%A6116469%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FLonUp_M
+trojan://humanity@188.114.98.0:443?path=%2Fassignment&amp;amp;security=tls&amp;amp;insecure=0&amp;amp;host=www.creationlong.org&amp;amp;type=ws&amp;amp;allowInsecure=0&amp;amp;sni=www.creationlong.org#%F0%9F%87%A8%F0%9F%87%A6116592%20%7C%20%E2%9A%A1%EF%B8%8FTelegram%20%3D%20t.me%2FLonUp_M
+trojan://MiTiVPN@104.16.72.41:443?path=---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN-fl&amp;amp;security=tls&amp;amp;alpn=h2%2Chttp%2F1.1&amp;amp;insecure=1&amp;amp;host=---MiTiVPN---MiTiVPN-s-.aPp-cLoud.IR&amp;amp;fp=chrome&amp;amp;type=ws&amp;amp;allowInsecure=1&amp;amp;sni=---MiTiVPN---MiTiVPN-u.aPp-cLoud.IR#%D9%87%D9%85%D9%87%20%D9%86%D8%AA%20%D9%87%D8%A7%E2%9A%A1%20%DA%86%D9%86%D9%84%20%D8%AA%D9%84%DA%AF%D8%B1%D8%A7%D9%85%3A%20MajorProxy%40
+trojan://MiTiVPN@104.26.5.60:443?path=---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN-sw&amp;amp;security=tls&amp;amp;alpn=h2%2Chttp%2F1.1&amp;amp;insecure=1&amp;amp;host=---MiTiVPN---MiTiVPN--o.aPp-cLoud.IR&amp;amp;fp=chrome&amp;amp;type=ws&amp;amp;allowInsecure=1&amp;amp;sni=---MiTiVPN---MiTiVPN-ao.aPp-cLoud.IR#%D9%87%D9%85%D9%87%20%D9%86%D8%AA%20%D9%87%D8%A7%F0%9F%94%A5%20%DA%86%D9%86%D9%84%20%D8%AA%D9%84%DA%AF%D8%B1%D8%A7%D9%85%3A%20MajorProxy%40
+trojan://MITIVPN@188.114.97.6:443?path=---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN-DE&amp;amp;security=tls&amp;amp;alpn=h2%2Chttp%2F1.1&amp;amp;insecure=1&amp;amp;host=m---MiTiVPN---MiTiVPN.aPp-cLoud.IR&amp;amp;fp=chrome&amp;amp;type=ws&amp;amp;allowInsecure=1&amp;amp;sni=MiTiVPN----o.aPp-cLoud.IR#%D9%87%D9%85%D9%87%20%D9%86%D8%AA%20%D9%87%D8%A7%F0%9F%A4%8C%20%DA%86%D9%86%D9%84%20%D8%AA%D9%84%DA%AF%D8%B1%D8%A7%D9%85%3A%20MajorProxy%40
+trojan://MITIVPN@45.130.125.162:443?path=---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN-us&amp;amp;security=tls&amp;amp;alpn=h2%2Chttp%2F1.1&amp;amp;insecure=1&amp;amp;host=p---MiTiVPN---MiTiVPN-av.aPp-cLoud.IR&amp;amp;fp=chrome&amp;amp;type=ws&amp;amp;allowInsecure=1&amp;amp;sni=7---MiTiVPN---MiTiVPN-7.aPp-cLoud.IR#%D9%87%D9%85%D9%87%20%D9%86%D8%AA%20%D9%87%D8%A7%F0%9F%8C%90%20%DA%86%D9%86%D9%84%20%D8%AA%D9%84%DA%AF%D8%B1%D8%A7%D9%85%3A%20MajorProxy%40
+trojan://MiTiVPN@104.16.174.12:443?path=---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN---%40MiTiVPN-nl&amp;amp;security=tls&amp;amp;alpn=h2%2Chttp%2F1.1&amp;amp;insecure=1&amp;amp;host=---MiTiVPN---MiTiVPN-o.aPp-cLoud.IR&amp;amp;fp=chrome&amp;amp;type=ws&amp;amp;allowInsecure=1&amp;amp;sni=---MiTiVPN---MiTiVPNj.aPp-cLoud.IR#%D9%87%D9%85%D9%87%20%D9%86%D8%AA%20%D9%87%D8%A7%F0%9F%9A%80%20%DA%86%D9%86%D9%84%20%D8%AA%D9%84%DA%AF%D8%B1%D8%A7%D9%85%3A%20MajorProxy%40
+trojan://humanity@188.114.96.3:443?fp=chrome&amp;amp;sni=www.multiplydose.com&amp;amp;insecure=0&amp;amp;allowInsecure=0&amp;amp;path=%2Fassignment&amp;amp;security=tls&amp;amp;type=ws#[🇨🇦</textarea>
+        </details>
+        <details class="part">
+            <summary>
+                <span>Part 3</span>
+                <button class="copy-part" data-target="part-3">Copy</button>
+            </summary>
+            <textarea id="part-3" readonly wrap="off">trojan://humanity@45.130.125.112:443?fp=chrome&amp;amp;sni=www.calmlunch.com&amp;amp;insecure=0&amp;amp;allowInsecure=0&amp;amp;path=%2Fassignment&amp;amp;security=tls&amp;amp;type=ws#[🇸🇨
+trojan://d39e048c-c9f3-c79d-6f0b-cfbba5722f1b@104.17.72.206:443?insecure=0&amp;amp;security=tls&amp;amp;pbk=enabled&amp;amp;path=%2FeyJqdW5rIjoia0IxSjE0MTliQ1MiLCJwcm90b2NvbCI6InRyIiwibW9kZSI6InByb3h5aXAiLCJwYW5lbElQcyI6W10sInJlbGF5SWR4IjozfQ%3D%3D&amp;amp;allowInsecure=0&amp;amp;type=ws&amp;amp;sni=quiet-hill-5b71.roi2bnd12r912msdn12m23rofo2fkk.workers.dev&amp;amp;fp=chrome&amp;amp;host=quiet-hill-5b71.roi2bnd12r912msdn12m23rofo2fkk.workers.dev#%40Green_hood7
+trojan://a1d0f080-6c8d-11ef-9751-1239d0255272@www.speedtest.net:443?path=%2Fhowdy&amp;amp;security=tls&amp;amp;host=usa.test3.net&amp;amp;type=ws&amp;amp;sni=usa.test3.net#[🇨🇦</textarea>
+        </details>
+  <div id="toast" class="toast">Copied</div>
+</div>
+<script>
+(function() {
+  const toast = document.getElementById('toast');
+  let timer = null;
+
+  function showToast() {
+    toast.classList.add('show');
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 1200);
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showToast).catch(() => fallbackCopy(text));
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.top = '-9999px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      showToast();
+    } catch (e) {
+      // ignore
+    }
+    document.body.removeChild(ta);
+  }
+
+  document.getElementById('copyAllBtn').addEventListener('click', function() {
+    const all = Array.from(document.querySelectorAll('textarea')).map(ta => ta.value).filter(v => v.trim());
+    copyText(all.join('\n'));
+  });
+
+  document.querySelectorAll('.copy-part').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const targetId = this.getAttribute('data-target');
+      const ta = document.getElementById(targetId);
+      if (ta) copyText(ta.value);
+    });
+  });
+})();
+</script>
+</body>
+</html>
